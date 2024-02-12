@@ -1,0 +1,6 @@
+{
+    "packages": {
+        "@appmaker-packages/extension-pop-coins": "packages/pop-coins"
+    },
+    "defaultPackage": "@appmaker-packages/extension-pop-coins"
+}
