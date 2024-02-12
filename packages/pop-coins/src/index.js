@@ -5,36 +5,41 @@ import { blocks } from './blocks/index';
 export function activate(params) {
   console.log('pop-coins activated with config', params);
 
-  // const deliveryCheckerBlock = {
-  //   clientId: 'delivery-checker-block',
-  //   name: 'extension-delivery-checker/delivery-checker',
-  //   attributes: {},
-  // };
+  const CartLoginBlock = {
+    clientId: 'popcoin/cart-custom-block',
+    name: 'popcoin/cart-custom-block',
+    attributes: {},
+  };
 
-  // appmaker.addFilter(
-  //   'inapp-page-data-response',
-  //   'delivery-checker',
-  //   (data, { pageId }) => {
-  //     if (pageId === 'cartPageCheckout') {
-  //       const index = settings?.block_position || 3; // settings from extension
-  //       const deliveryBlockIndex = findBlockIndex(
-  //         data.blocks,
-  //         deliveryCheckerBlock.clientId,
-  //       );
-  //       if (deliveryBlockIndex === -1) {
-  //         data.blocks.splice(index + 1, 0, deliveryCheckerBlock);
-  //       }
-  //     }
-  //     return data;
-  //   },
-  // );
+  function findBlockIndex(blocks, name) {
+    return blocks.findIndex((block) => block.name === name);
+  }
+
+  appmaker.addFilter(
+    'inapp-page-data-response',
+    'popcoin/cart-custom-block',
+    (data, { pageId }) => {
+      if (pageId === 'cartPageCheckout') {
+        const index = 1; // settings from extension
+        // const index = settings?.block_position || 3; // settings from extension
+        const deliveryBlockIndex = findBlockIndex(
+          data.blocks,
+          CartLoginBlock.clientId,
+        );
+        if (deliveryBlockIndex === -1) {
+          data.blocks.splice(index + 1, 0, CartLoginBlock);
+        }
+      }
+      return data;
+    },
+  );
 }
 
 const PopCoins = {
   id: 'pop-coins',
   activate,
   blocks,
-  pages,
+  // pages,
 };
 appmaker.registerPlugin(PopCoins);
 export default PopCoins;

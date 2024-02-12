@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import PopCoinLogo from '../assets/popcoin-logo.png';
-import { useUser } from '@appmaker-xyz/shopify';
+import { useUser, useCart } from '@appmaker-xyz/shopify';
 
 const CartLoginBlock = ({ attributes, onAction }) => {
   const {
@@ -12,6 +12,10 @@ const CartLoginBlock = ({ attributes, onAction }) => {
     loginLoadingStatus,
     isLoggedin,
   } = useUser();
+
+  const { totalQuantity, cartSubTotalAmount } = useCart;
+
+  console.log('subtotal', cartSubTotalAmount);
 
   console.log({ user, register, login, loginViaGoogle, loginLoadingStatus });
   return (

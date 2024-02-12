@@ -1,7 +1,5 @@
-import CustomPage from './customPage';
-
+// eslint-disable-next-line prettier/prettier
 const pages = {
-  productDetail: CustomPage,
 };
 
 export { pages };

@@ -1,6 +1,6 @@
 import '@appmaker-xyz/plugins';
 // import '@appmaker-xyz/shopify-core-theme';
-import '@appmaker-packages/theme-mcaffeine';
+// import '@appmaker-packages/theme-mcaffeine';
 import { activateLocalTheme, activateLocalExtension } from '@appmaker-xyz/core';
 
 // Import packages here
