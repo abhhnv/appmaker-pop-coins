@@ -1,8 +1,12 @@
-import { appmaker } from '@appmaker-xyz/core';
+import { appmaker, insertToSlot } from '@appmaker-xyz/core';
 import { pages } from './pages/index';
 import { blocks } from './blocks/index';
 
 export function activate(params) {
+  // insertToSlot('grid-item-below-price', <p>hello</p>);
+  // insertToSlot('grid-item-below-price', VendorName, 0);
+  // insertToSlot('pdp-below-price', ExampleComponent, 0);
+
   console.log('pop-coins activated with config', params);
 
   const CartLoginBlock = {
