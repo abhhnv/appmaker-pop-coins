@@ -16,6 +16,7 @@
   "dependencies": {
     "@appmaker-xyz/app-config": "0.3.0",
     "@appmaker-xyz/core": "0.4.34-staging-0b7aefe.0",
+    "@appmaker-xyz/files": "1.0.0",
     "@appmaker-xyz/plugins": "0.2.86-staging-0b7aefe.0",
     "@appmaker-xyz/react-native": "0.4.44-staging-0b7aefe.0",
     "@appmaker-xyz/remote-bundle": "0.0.6-staging-0b7aefe.0",
@@ -24,7 +25,6 @@
     "@appmaker-xyz/themes": "0.2.30",
     "@appmaker-xyz/ui": "0.2.31-staging-0b7aefe.0",
     "@appmaker-xyz/uikit": "0.2.47-staging-0b7aefe.0",
-    "@appmaker-xyz/files": "1.0.0",
     "@babel/preset-react": "^7.14.5",
     "@craco/craco": "^6.3.0",
     "@fluentui/react-context-selector": "^0.53.4",
@@ -37,6 +37,7 @@
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-clipboard/clipboard": "^1.11.1",
     "@react-native-community/async-storage": "^1.12.0",
+    "@react-native-community/checkbox": "^0.5.17",
     "@react-native-community/datetimepicker": "^2.6.2",
     "@react-native-community/picker": "^1.6.6",
     "@react-native-community/push-notification-ios": "^1.10.1",
