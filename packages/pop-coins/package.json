@@ -1,7 +1,10 @@
 {
     "name": "@appmaker-packages/extension-pop-coins",
-    "version": "0.1.0",
+    "version": "0.5.0",
     "main": "src/index.js",
     "description": "Appmaker",
-    "dependencies": {}
+    "dependencies": {},
+    "peerDependencies": {
+        "@react-native-community/checkbox": "^0.5.17"
+    }
 }

@@ -5,12 +5,16 @@ import { blocks } from './blocks/index';
 import PDPBlock from './components/PDPBlock';
 import ListingBlock from './components/ListingBlock';
 import CartEarnBlock from './components/CartEarnBlock';
+import { setSettings } from '../config';
 
 export function activate(params) {
+  console.log('paramslogged', params?.settings);
+  console.log('testhello');
+  setSettings(params?.settings);
   insertToSlot('grid-item-below-price', ListingBlock, 0);
   insertToSlot('pdp-below-price', PDPBlock, 0);
 
-  console.log('pop-coins activated with config', params);
+  console.log('pop-coins activated with config', params + '');
 
   const CartLoginBlock = {
     clientId: 'popcoin/cart-custom-block',

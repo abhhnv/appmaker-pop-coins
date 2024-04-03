@@ -6,6 +6,8 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 
 const EarnBlock = ({ attributes, onAction }) => {
   const { title, appmakerAction } = attributes;
+  console.log("thisissettings");
+
   return (
     <View style={styles.container}>
       <Text>POPCOIN TEST TEXT</Text>

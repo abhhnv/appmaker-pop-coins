@@ -4,11 +4,13 @@ import { useProductDetail } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { getSettings } from '../../config';
 
 const PDPBlock = (props) => {
   const { attributes, onAction } = props;
 
-  const [brandData, setBrandData] = useState();
+  const [brandData, setBrandData] = useState(null);
+  const settings = getSettings();
 
   const {
     product,
@@ -22,29 +24,30 @@ const PDPBlock = (props) => {
   } = useProductDetail(props);
 
   useEffect(() => {
-    fetch(
-      'https://prodreplica.mypopcoins.com/api/get-brand?shop=iamcaffeine.myshopify.com',
-    )
+    fetch(settings['shopify-store-name'])
       .then((res) => res.json())
       .then((data) => setBrandData(data));
   }, []);
 
-  console.log({ brandData });
-  console.log({ regularPriceValue, salePriceValue });
+  console.log('thisissettingsPDP', settings['shopify-store-name']);
+  console.log('brandData', brandData);
 
   return (
     <View style={styles.container}>
       {brandData ? (
         <Text style={styles.block}>
           <Text>Earn</Text>
-          <Image style={{ width: 25, height: 25 }} source={BeanCoinLogo} />
+          <Image
+            style={{ width: 25, height: 25 }}
+            source={{ uri: settings['popcoin-logo']?.url }}
+          />
           <Text>
-            {Math.floor((brandData?.issuance_rate / 100) * salePriceValue)}
+            {Math.trunc((brandData?.issuance_rate / 100) * salePriceValue)}
             &nbsp;
           </Text>
           <Text>worth Rs.&nbsp;</Text>
           <Text>
-            {Math.floor((brandData?.issuance_rate / 100) * salePriceValue)}
+            {Math.trunc((brandData?.issuance_rate / 100) * salePriceValue)}
             &nbsp;
           </Text>
         </Text>

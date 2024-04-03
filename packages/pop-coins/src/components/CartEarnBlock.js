@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, CheckBox, Button } from 'react-native';
 import { useUser, useCart } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
+import { getSettings } from '../../config';
 
 const CartEarnBlock = ({ attributes, onAction }) => {
+    const settings = getSettings();
     const {
         user,
         register,
@@ -16,34 +18,36 @@ const CartEarnBlock = ({ attributes, onAction }) => {
     } = useUser();
 
     const { cart, cartSubTotalAmount } = useCart();
-    const [brandData, setBrandData] = useState();
+    const [brandData, setBrandData] = useState(null);
 
 
     useEffect(() => {
-        fetch(
-            'https://prodreplica.mypopcoins.com/api/get-brand?shop=iamcaffeine.myshopify.com',
-        )
+        fetch(settings['shopify-store-name'])
             .then((res) => res.json())
             .then((data) => setBrandData(data));
     }, []);
 
-    console.log({brandData});
+    console.log("thisissettings", settings);
 
     return (
         <View style={styles.container}>
-            {isLoggedin ? (
+            {isLoggedin && (
                 <>
                     <View style={styles.block}>
-                        {brandData ? (
+                        {brandData?.issuance_rate ? (
                             <Text style={styles.block}>
-                                <Text>Earn</Text>
-                                <Image style={{ width: 25, height: 25 }} source={BeanCoinLogo} />
-                                <Text>{Math.floor((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;</Text>
+                                <Text>Earn </Text>
+                                <Text>{Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
+                                <Image style={{ width: 25, height: 25 }} source={{ uri: settings['popcoin-logo']?.url }} />
+                                <Text>worth</Text>
+                                <Text> Rs. {Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
                             </Text>
-                        ) : null}
+                        )
+                            : <Text> </Text>
+                        }
                     </View>
                 </>
-            ) : null }
+            )}
         </View>
     );
 };
@@ -53,9 +57,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingVertical: 10,
         paddingHorizontal: 10,
-        paddingBottom : 20,
+        paddingBottom: 20,
         display: 'flex',
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
     },
 });
 
