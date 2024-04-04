@@ -1,6 +1,6 @@
 {
     "name": "@appmaker-packages/extension-pop-coins",
-    "version": "0.5.0",
+    "version": "0.5.4",
     "main": "src/index.js",
     "description": "Appmaker",
     "dependencies": {},

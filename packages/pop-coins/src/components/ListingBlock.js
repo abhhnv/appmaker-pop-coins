@@ -2,9 +2,10 @@
 // listing block
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
-import { useProductListItem } from '@appmaker-xyz/shopify';
+import { useProductListItem, useUser } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
 import { getSettings } from '../../config';
+
 
 
 
@@ -13,6 +14,7 @@ const ListingBlock = (props) => {
     const settings = getSettings();
     const { salePriceValue, regularPriceValue } = useProductListItem(props);
     const [brandData, setBrandData] = useState(null);
+    const { isLoggedin} = useUser();
 
     useEffect(() => {
         fetch(settings['shopify-store-name'])
@@ -25,7 +27,7 @@ const ListingBlock = (props) => {
     return (
         <View style={styles.container}>
             {
-                brandData?.redemption_rate && (
+               brandData?.redemption_rate && (
                     <Text style={styles.block}>
                         <Text>or Rs. </Text>
                         {regularPriceValue ?

@@ -8,7 +8,7 @@ import { activateLocalTheme, activateLocalExtension } from '@appmaker-xyz/core';
 
 import '@appmaker-packages/extension-pop-coins';
 
-activateLocalExtension({ id: 'pop-coins', settings: {} });
+// activateLocalExtension({ id: 'pop-coins', settings: {} });
 
 // activateLocalTheme({
 //   id: 'custom-160723-mcaffeine',

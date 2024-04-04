@@ -141,23 +141,15 @@ const CartLoginBlock = (props) => {
   return (
     <View style={styles.container}>
       {!isLoggedin ? (
-        <>
           <View>
-            <View style={styles.block}>
-              <Text>You are missing out on earning {Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} BeanCoins</Text>
-              <Image style={{ width: 25, height: 25 }}
-                source={{ uri: settings['popcoin-logo']?.url }}
-              />              <Text>on this order</Text>
-            </View>
-            <Text onPress={handleLogin}>Sign in to get upto {brandData?.redemption_rate}% off using BeanCoins </Text>
+            <Text style={styles.textLogin} onPress={handleLogin}>Log in to get upto {brandData?.redemption_rate}% off using Bean Coins </Text>
           </View>
-        </>
       )
-        : <Text></Text>
+        : <Text>{' '}</Text>
       }
 
       {isLoggedin ? (
-        <>
+        <View>
           {coinsData?.coins !== undefined ? (
             <View style={styles.block}>
               <CheckBox
@@ -167,28 +159,31 @@ const CartLoginBlock = (props) => {
               />
               {isChecked
                 ?
-                <>
+                <View>
                   {loading ? <Text>Loading...⏳</Text> :
                     <Text style={{ fontWeight: '900' }}>Rs. {Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Saved Using</Text>
                   }
-                </>
+                </View>
                 :
-                <>
+                <View>
                   {loading ? <Text>Loading...⏳</Text> :
                     <Text style={{ fontWeight: '900' }}>Rs. {Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Save Using</Text>
                   }
-                </>
+                </View>
               }
               <Image style={{ width: 25, height: 25 }}
                 source={{ uri: settings['popcoin-logo']?.url }}
               />
             </View>
           )
-            : null
+            :
+            <Text>{' '}</Text>
           }
-        </>
+        </View>
       )
-        : null}
+        :
+        <Text>{' '}</Text>
+      }
     </View>
   );
 };
@@ -197,19 +192,23 @@ const styles = StyleSheet.create({
   container: {
     color: 'white',
     paddingVertical: 10,
-    paddingHorizontal: 5,
+    paddingHorizontal: 15,
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
   },
 
   block: {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
+    color: 'red',
   },
   blockLogout: {
     display: 'flex',
-  }
+  },
+  textLogin: {
+    fontWeight: 'bold',
+  },
 });
 
 export default CartLoginBlock;

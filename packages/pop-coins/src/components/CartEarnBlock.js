@@ -31,22 +31,20 @@ const CartEarnBlock = ({ attributes, onAction }) => {
 
     return (
         <View style={styles.container}>
-            {isLoggedin && (
-                <>
+            {(
                     <View style={styles.block}>
                         {brandData?.issuance_rate ? (
                             <Text style={styles.block}>
                                 <Text>Earn </Text>
-                                <Text>{Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
                                 <Image style={{ width: 25, height: 25 }} source={{ uri: settings['popcoin-logo']?.url }} />
-                                <Text>worth</Text>
+                                <Text>{Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
+                                <Text>&nbsp;worth</Text>
                                 <Text> Rs. {Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
                             </Text>
                         )
                             : <Text> </Text>
                         }
                     </View>
-                </>
             )}
         </View>
     );
@@ -56,10 +54,13 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         paddingVertical: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
         paddingBottom: 20,
         display: 'flex',
         alignItems: 'flex-start',
+    },
+    block: {
+        fontWeight: 'bold',
     },
 });
 
