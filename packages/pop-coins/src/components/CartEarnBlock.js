@@ -5,6 +5,8 @@ import { View, Text, StyleSheet, Image, CheckBox, Button } from 'react-native';
 import { useUser, useCart } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
 import { getSettings } from '../../config';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 const CartEarnBlock = ({ attributes, onAction }) => {
     const settings = getSettings();
@@ -20,11 +22,20 @@ const CartEarnBlock = ({ attributes, onAction }) => {
     const { cart, cartSubTotalAmount } = useCart();
     const [brandData, setBrandData] = useState(null);
 
-
     useEffect(() => {
-        fetch(settings['shopify-store-name'])
-            .then((res) => res.json())
-            .then((data) => setBrandData(data));
+        const fetchData = async () => {
+            try {
+                // Retrieve data from AsyncStorage
+                const data = await AsyncStorage.getItem('brandData');
+                if (data !== null) {
+                    // Parse the retrieved data
+                    setBrandData(JSON.parse(data));
+                }
+            } catch (error) {
+                console.error('Error retrieving data:', error);
+            }
+        };
+        fetchData();
     }, []);
 
     console.log("thisissettings", settings);
@@ -32,19 +43,19 @@ const CartEarnBlock = ({ attributes, onAction }) => {
     return (
         <View style={styles.container}>
             {(
-                    <View style={styles.block}>
-                        {brandData?.issuance_rate ? (
-                            <Text style={styles.block}>
-                                <Text>Earn </Text>
-                                <Image style={{ width: 25, height: 25 }} source={{ uri: settings['popcoin-logo']?.url }} />
-                                <Text>{Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
-                                <Text>&nbsp;worth</Text>
-                                <Text> Rs. {Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
-                            </Text>
-                        )
-                            : <Text> </Text>
-                        }
-                    </View>
+                <View style={styles.block}>
+                    {brandData?.issuance_rate ? (
+                        <Text style={styles.block}>
+                            <Text>Earn </Text>
+                            <Image style={{ width: 25, height: 25 }} source={{ uri: settings['popcoin-logo']?.url }} />
+                            <Text>{Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
+                            <Text>&nbsp;worth</Text>
+                            <Text> Rs. {Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
+                        </Text>
+                    )
+                        : <Text> </Text>
+                    }
+                </View>
             )}
         </View>
     );

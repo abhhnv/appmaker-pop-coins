@@ -6,15 +6,28 @@ import PDPBlock from './components/PDPBlock';
 import ListingBlock from './components/ListingBlock';
 import CartEarnBlock from './components/CartEarnBlock';
 import { setSettings } from '../config';
+import { getSettings } from '../config';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export function activate(params) {
-  console.log('paramslogged', params?.settings);
-  console.log('testhello');
   setSettings(params?.settings);
   insertToSlot('grid-item-below-price', ListingBlock, 0);
   insertToSlot('pdp-below-price', PDPBlock, 0);
 
-  console.log('pop-coins activated with config', params + '');
+  const settings = getSettings();
+
+  function getBrandData() {
+    fetch(settings['shopify-store-name'])
+      .then((res) => res.json())
+      .then((data) => {
+        // Store data in AsyncStorage
+        AsyncStorage.setItem('brandData', JSON.stringify(data))
+          .then(() => console.log('Data stored successfully'))
+          .catch((error) => console.error('Error storing data:', error));
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }
+  getBrandData();
 
   const CartLoginBlock = {
     clientId: 'popcoin/cart-custom-block',

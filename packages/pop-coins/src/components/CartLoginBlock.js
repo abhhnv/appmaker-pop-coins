@@ -56,7 +56,7 @@ const CartLoginBlock = (props) => {
     headers.append('Content-Type', 'application/json');
 
     const requestData = {
-      'shop': 'iamcaffeine.myshopify.com',
+      'shop': settings['shopify-name'],
       'email': user?.email,
     };
 
@@ -83,7 +83,7 @@ const CartLoginBlock = (props) => {
       headers.append('Content-Type', 'application/json');
 
       const requestData = {
-        'shop': 'iamcaffeine.myshopify.com',
+        'shop': settings['shopify-name'],
         'email': user?.email,
         'cart': cartTotalPrice,
       };
