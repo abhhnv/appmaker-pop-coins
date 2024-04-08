@@ -161,19 +161,19 @@ const CartLoginBlock = (props) => {
                 ?
                 <View>
                   {loading ? <Text>Loading...⏳</Text> :
-                    <Text style={{ fontWeight: '900' }}>Rs. {Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Saved Using</Text>
+                    <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Saved Using BeanCoins</Text>
                   }
                 </View>
                 :
                 <View>
                   {loading ? <Text>Loading...⏳</Text> :
-                    <Text style={{ fontWeight: '900' }}>Rs. {Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.trunc(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Save Using</Text>
+                    <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Save Using BeanCoins</Text>
                   }
                 </View>
               }
-              <Image style={{ width: 25, height: 25 }}
+              {/* <Image style={{ width: 25, height: 25 }}
                 source={{ uri: settings['popcoin-logo']?.url }}
-              />
+              /> */}
             </View>
           )
             :

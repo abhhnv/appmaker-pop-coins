@@ -70,36 +70,37 @@ const ListingBlock = (props) => {
                 brandData?.redemption_rate && (
                     <Text style={styles.block}>
                         <Text>or Rs. </Text>
-                        {regularPriceValue ?
-                            <Text>{Math.trunc(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue))}</Text>
+                        {salePriceValue ?
+                            <Text>{Math.floor(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue))}</Text>
                             :
-                            <Text>{Math.trunc(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue))}</Text>
+                            <Text>{Math.floor(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue))}</Text>
                         }
-                        <Text>+</Text>
+                        <Text>&nbsp;+</Text>
                         <Image style={{ width: 25, height: 25 }}
                             source={{ uri: settings['popcoin-logo']?.url }}
                         />
                         <Text>
                             {isLoggedin ?
                                 <Text>
-                                    {regularPriceValue ?
+                                    {salePriceValue ?
                                         <Text>
-                                            {Math.trunc((brandData.redemption_rate / 100) * regularPriceValue) < coinsData?.coins ? Math.trunc((brandData.redemption_rate / 100) * regularPriceValue) : coinsData?.coins}
+                                            {Math.floor((brandData.redemption_rate / 100) * salePriceValue) < coinsData?.coins ? Math.floor((brandData.redemption_rate / 100) * salePriceValue) : coinsData?.coins}
                                         </Text>
                                         :
-                                        <Text>{Math.trunc((brandData.redemption_rate / 100) * salePriceValue) < coinsData?.coins ? Math.trunc((brandData.redemption_rate / 100) * salePriceValue) : coinsData?.coins}</Text>
+                                        <Text>
+                                            {Math.floor((brandData.redemption_rate / 100) * regularPriceValue) < coinsData?.coins ? Math.floor((brandData.redemption_rate / 100) * regularPriceValue) : coinsData?.coins}
+                                        </Text>
                                     }
                                 </Text>
                                 :
-
                                 <Text>
-                                    {regularPriceValue ?
+                                    {salePriceValue ?
                                         <Text>
-                                            {Math.trunc((brandData.redemption_rate / 100) * regularPriceValue)}
+                                            {Math.floor((brandData.redemption_rate / 100) * salePriceValue)}
                                         </Text>
                                         :
                                         <Text>
-                                            {Math.trunc((brandData.redemption_rate / 100) * salePriceValue)}
+                                            {Math.floor((brandData.redemption_rate / 100) * regularPriceValue)}
                                         </Text>
                                     }
                                 </Text>

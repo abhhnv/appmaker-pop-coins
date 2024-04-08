@@ -81,12 +81,12 @@ const PDPBlock = (props) => {
             source={{ uri: settings['popcoin-logo']?.url }}
           />
           <Text>
-            {Math.trunc((brandData?.issuance_rate / 100) * salePriceValue)}
+            {Math.floor((brandData?.issuance_rate / 100) * salePriceValue)}
             &nbsp;
           </Text>
           <Text>worth Rs.&nbsp;</Text>
           <Text>
-            {Math.trunc((brandData?.issuance_rate / 100) * salePriceValue)}
+            {Math.floor((brandData?.issuance_rate / 100) * salePriceValue)}
             &nbsp;
           </Text>
         </Text>

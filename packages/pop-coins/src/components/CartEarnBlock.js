@@ -48,9 +48,9 @@ const CartEarnBlock = ({ attributes, onAction }) => {
                         <Text style={styles.block}>
                             <Text>Earn </Text>
                             <Image style={{ width: 25, height: 25 }} source={{ uri: settings['popcoin-logo']?.url }} />
-                            <Text>{Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
+                            <Text>{Math.floor((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
                             <Text>&nbsp;worth</Text>
-                            <Text> Rs. {Math.trunc((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
+                            <Text> Rs. {Math.floor((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
                         </Text>
                     )
                         : <Text> </Text>
