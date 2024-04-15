@@ -227,7 +227,7 @@ const CartLoginBlock = (props) => {
                   <View>
                     {loading ? <Text>Loading...⏳</Text> :
                       <Text>
-                        <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.round(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Saved Using BeanCoins{"\n"}</Text>
+                        <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.round(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Saved Using BeanCoins</Text>
                         <Text>{"\n"}</Text>
                         <Text>(Cannot be clubbed with other discounts)</Text>
                       </Text>
@@ -237,7 +237,7 @@ const CartLoginBlock = (props) => {
                   <View>
                     {loading ? <Text>Loading...⏳</Text> :
                       <Text>
-                        <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.round(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Save Using BeanCoins (Cannot be clubbed with other discounts){"\n"}</Text>
+                        <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartTotalPrice)) < coinsData?.coins ? Math.round(((brandData?.redemption_rate / 100) * cartTotalPrice)) : coinsData?.coins} | Save Using BeanCoins</Text>
                         <Text>{"\n"}</Text>
                         <Text>(Cannot be clubbed with other discounts)</Text>
                       </Text>
