@@ -31,6 +31,13 @@ const CartEarnBlock = ({ attributes, onAction }) => {
                     // Parse the retrieved data
                     setBrandData(JSON.parse(data));
                 }
+                else {
+                    fetch(settings['shopify-store-name'])
+                        .then((res) => res.json())
+                        .then((retryData) => {
+                            setBrandData(retryData);
+                        });
+                }
             } catch (error) {
                 console.error('Error retrieving data:', error);
             }

@@ -8,11 +8,14 @@ import CartEarnBlock from './components/CartEarnBlock';
 import { setSettings } from '../config';
 import { getSettings } from '../config';
 import AsyncStorage from '@react-native-community/async-storage';
+import { getUser } from '@appmaker-xyz/core';
 
 export function activate(params) {
   setSettings(params?.settings);
   insertToSlot('grid-item-below-price', ListingBlock, 0);
   insertToSlot('pdp-below-price', PDPBlock, 0);
+  const user = getUser();
+  console.log('user---', user);
 
   const settings = getSettings();
 
@@ -28,6 +31,44 @@ export function activate(params) {
       .catch((error) => console.error('Error fetching data:', error));
   }
   getBrandData();
+
+  // GET AVAILABLE COINS API
+  function getCoins() {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
+    headers.append('Content-Type', 'application/json');
+
+    const requestData = {
+      // eslint-disable-next-line prettier/prettier
+      'shop': settings['shopify-name'],
+      // eslint-disable-next-line prettier/prettier
+      'email': user?.email,
+    };
+
+    const requestOptions = {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(requestData),
+    };
+
+    fetch(
+      'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
+      requestOptions,
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('datahere', data);
+        // Store data in AsyncStorage
+        AsyncStorage.setItem('coinsData', JSON.stringify(data))
+          .then(() => console.log('Coins data stored successfully'))
+          .catch((error) => console.error('Error storing coins data:', error));
+      })
+      .catch((error) => console.error('Error fetching coins data:', error));
+  }
+
+  if (user?.email && settings['shopify-name']) {
+    getCoins();
+  }
 
   const CartLoginBlock = {
     clientId: 'popcoin/cart-custom-block',

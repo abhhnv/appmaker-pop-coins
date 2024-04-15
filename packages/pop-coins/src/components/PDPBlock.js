@@ -34,39 +34,63 @@ const PDPBlock = (props) => {
         if (data !== null) {
           // Parse the retrieved data
           setBrandData(JSON.parse(data));
+        } else {
+          fetch(settings['shopify-store-name'])
+            .then((res) => res.json())
+            .then((retryData) => {
+              setBrandData(retryData);
+            });
         }
       } catch (error) {
         console.error('Error retrieving data:', error);
       }
     };
     fetchData();
-  }, []);
+  }, [settings]);
 
-  // GET AVAILABLE COINS API
   useEffect(() => {
-    const headers = new Headers();
+    const fetchCoinsData = async () => {
+      try {
+        // Retrieve data from AsyncStorage
+        const data = await AsyncStorage.getItem('coinsData');
+        if (data !== null && data !== undefined) {
+          // Parse the retrieved data
+          setCoinsData(JSON.parse(data));
+          console.log('asdf===================', user?.email);
+        } else {
+          console.log('elsepart====================');
+          const headers = new Headers();
+          headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
+          headers.append('Content-Type', 'application/json');
 
-    headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
-    headers.append('Content-Type', 'application/json');
+          const requestData = {
+            // eslint-disable-next-line prettier/prettier
+            'shop': settings['shopify-name'],
+            // eslint-disable-next-line prettier/prettier
+            'email': user?.email,
+          };
 
-    const requestData = {
-      shop: settings['shopify-name'],
-      email: user?.email,
+          const requestOptions = {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(requestData),
+          };
+
+          fetch(
+            'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
+            requestOptions,
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              setCoinsData(data);
+            });
+        }
+      } catch (error) {
+        console.error('Error retrieving data:', error);
+      }
     };
-
-    const requestOptions = {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(requestData),
-    };
-
-    fetch(
-      'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
-      requestOptions,
-    )
-      .then((res) => res.json())
-      .then((data) => setCoinsData(data));
-  }, [user?.email]);
+    fetchCoinsData();
+  }, [user?.email, settings]);
 
   console.log('thisissettingsPDP', settings['shopify-store-name']);
   console.log('brandData', brandData);
