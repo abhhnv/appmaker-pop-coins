@@ -83,7 +83,6 @@ const ListingBlock = (props) => {
                 getCoins();
             }
         }
-        getCoins();
     }, [user, user?.email, settings]);
 
     console.log("-------->coinsData", coinsData);
