@@ -48,7 +48,7 @@ const ListingBlock = (props) => {
     // getting coins data from the storage
     useEffect(() => {
         async function getCoins() {
-            const data = await AsyncStorage.getItem('coisData');
+            const data = await AsyncStorage.getItem('coinsData');
             if (data) {
                 console.log({ data });
                 setCoinsData(() => data);
