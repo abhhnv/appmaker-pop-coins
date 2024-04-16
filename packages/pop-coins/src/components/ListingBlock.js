@@ -6,6 +6,8 @@ import { useProductListItem, useUser } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
 import { getSettings } from '../../config';
 import AsyncStorage from '@react-native-community/async-storage';
+import { getUser } from '@appmaker-xyz/core';
+
 
 const ListingBlock = (props) => {
     const { attributes, onAction } = props;
@@ -14,9 +16,10 @@ const ListingBlock = (props) => {
     const [brandData, setBrandData] = useState(null);
     const [coinsData, setCoinsData] = useState();
     const [userEmail, setUserEmail] = useState("");
-    const { isLoggedin, user } = useUser();
+    const { isLoggedin } = useUser();
+    const user = getUser();
 
-    // getting data from storage
+    // getting brand data from storage
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -41,15 +44,47 @@ const ListingBlock = (props) => {
         fetchData();
     }, [settings]);
 
+
+    // getting coins data from the storage
     useEffect(() => {
         async function getCoins() {
-            const data = await AsyncStorage.getItem('coinsData');
+            const data = await AsyncStorage.getItem('coisData');
             if (data) {
+                console.log({ data });
                 setCoinsData(() => data);
+            }
+            else {
+                function getCoins() {
+                    const headers = new Headers();
+                    headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
+                    headers.append('Content-Type', 'application/json');
+
+                    const requestData = {
+                        // eslint-disable-next-line prettier/prettier
+                        'shop': settings['shopify-name'],
+                        // eslint-disable-next-line prettier/prettier
+                        'email': user?.email,
+                    };
+
+                    const requestOptions = {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(requestData),
+                    };
+
+                    fetch(
+                        'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
+                        requestOptions,
+                    )
+                        .then((res) => res.json())
+                        .then((data) => { setCoinsData(data)})
+                        .catch((error) => console.error('Error fetching coins data:', error));
+                }
+                getCoins();
             }
         }
         getCoins();
-    }, []);
+    }, [user, user?.email, settings]);
 
     console.log("-------->coinsData", coinsData);
 
@@ -60,7 +95,7 @@ const ListingBlock = (props) => {
                     {/* <Text>{coinsData?.coins + " " + "-" + brandData?.redemption_rate}</Text> */}
                     {/* <Text>{user?.email}</Text> */}
                     <Text>{coinsData?.coins + ''}</Text>
-                    <Text>fghjk</Text>
+                    <Text>static text testing</Text>
                     {brandData?.redemption_rate && coinsData?.avaiable &&
                         (
                             <Text style={styles.block}>

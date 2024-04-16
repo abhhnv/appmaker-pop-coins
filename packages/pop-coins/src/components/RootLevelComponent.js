@@ -58,11 +58,12 @@ const RootLevelComponent = (props) => {
         })
         .catch((error) => console.error('Error fetching data:', error));
     }
+
     // if (user?.email && settings['shopify-name']) {
-      getCoins();
-      getBrandData();
+    getCoins();
+    getBrandData();
     // }
-  }, [settings['shopify-name'], user?.email, settings]);
+  }, [settings['shopify-name'], user?.email, settings, user]);
 
   return null;
 };
