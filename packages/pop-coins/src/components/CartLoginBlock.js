@@ -19,10 +19,10 @@ const CartLoginBlock = (props) => {
 
   const [isChecked, setChecked] = useState(false);
   const [discountData, setDiscountData] = useState();
-  const [coinsData, setCoinsData] = useState();
+  const [coinsData, setCoinsData] = useState(null);
   const [brandData, setBrandData] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [userEmail, setUserEmail] = useState("");
 
   const {
     user,
@@ -36,6 +36,7 @@ const CartLoginBlock = (props) => {
   const { totalQuantity, cartSubTotalAmount, cartTotalPrice, cartDiscountSavings } = useCart();
   const { appliedDiscountCodeItem, hasAutomaticDiscountApplied, appliedAutomaticDiscountItem, hasCouponApplied, couponsList } = useDiscount(props);
 
+  // brand data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,46 +60,46 @@ const CartLoginBlock = (props) => {
     fetchData();
   }, [settings]);
 
+  // coins data
   useEffect(() => {
-    const fetchCoinsData = async () => {
-      try {
-        // Retrieve data from AsyncStorage
-        const data = await AsyncStorage.getItem('coinsData');
-        if (data !== null && data !== undefined) {
-          // Parse the retrieved data
-          setCoinsData(JSON.parse(data));
-        }
-        else {
-          const headers = new Headers();
-          headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
-          headers.append('Content-Type', 'application/json');
+    if (user?.email != null) {
+      // setUserEmail(user.email);
+      // fetchCoinsData(userEmail);
+      const headers = new Headers();
+      headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
+      headers.append('Content-Type', 'application/json');
 
-          const requestData = {
-            // eslint-disable-next-line prettier/prettier
-            'shop': settings['shopify-name'],
-            // eslint-disable-next-line prettier/prettier
-            'email': user?.email,
-          };
+      const requestData = {
+        // eslint-disable-next-line prettier/prettier
+        'shop': settings['shopify-name'],
+        // eslint-disable-next-line prettier/prettier
+        'email': user?.email,
+      };
 
-          const requestOptions = {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(requestData),
-          };
+      const requestOptions = {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(requestData),
+      };
 
-          fetch(
-            'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
-            requestOptions,
-          )
-            .then((res) => res.json())
-            .then((data) => { setCoinsData(data) });
-        }
-      } catch (error) {
-        console.error('Error retrieving data:', error);
+      fetch('https://prodreplica.mypopcoins.com/api/get/available/coins/email', requestOptions)
+        .then((res) => res.json())
+        .then((data) => {
+          setCoinsData(data);
+        });
+    }
+  }, [user?.email, user, userEmail, settings]);
+
+
+  useEffect(() => {
+    async function getCoins() {
+      const data = await AsyncStorage.getItem('coinsData');
+      if (data != null && coinsData === null) {
+        setCoinsData(data);
       }
-    };
-    fetchCoinsData();
-  }, [user?.email, settings]);
+    }
+    getCoins();
+  }, []);
 
   // DISCOUNT CODE GENERATION
   useEffect(() => {
@@ -188,8 +189,8 @@ const CartLoginBlock = (props) => {
 
   console.log("cart=============================================", cart?.discountApplications?.edges?.length);
 
-
   useEffect(() => {
+    console.log("ischeked", isChecked, appliedDiscountCodeItem?.code)
     if (isChecked === false) {
       if (appliedDiscountCodeItem?.code?.length > 2) {
         onAction({
@@ -215,7 +216,7 @@ const CartLoginBlock = (props) => {
       {isLoggedin ? (
         <View>
           <Text>
-            {coinsData?.coins !== undefined ? (
+            {coinsData?.avaiable ? (
               <View style={styles.block}>
                 <CheckBox
                   value={isChecked}
