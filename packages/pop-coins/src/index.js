@@ -9,6 +9,7 @@ import { setSettings } from '../config';
 import { getSettings } from '../config';
 import AsyncStorage from '@react-native-community/async-storage';
 import { getUser } from '@appmaker-xyz/core';
+import RootLevelComponent from './components/RootLevelComponent';
 
 export function activate(params) {
   setSettings(params?.settings);

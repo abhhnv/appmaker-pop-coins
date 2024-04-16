@@ -6,18 +6,16 @@ import { useProductListItem, useUser } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
 import { getSettings } from '../../config';
 import AsyncStorage from '@react-native-community/async-storage';
-import { getUser } from '@appmaker-xyz/core';
 
 
 const ListingBlock = (props) => {
     const { attributes, onAction } = props;
     const settings = getSettings();
-    const { salePriceValue, regularPriceValue } = useProductListItem(props);
+    const { salePriceValue, regularPriceValue, title } = useProductListItem(props);
     const [brandData, setBrandData] = useState(null);
     const [coinsData, setCoinsData] = useState();
     const [userEmail, setUserEmail] = useState("");
-    const { isLoggedin } = useUser();
-    const user = getUser();
+    const { isLoggedin, user } = useUser();
 
     // getting brand data from storage
     useEffect(() => {
@@ -28,14 +26,7 @@ const ListingBlock = (props) => {
                 if (data !== null) {
                     // Parse the retrieved data
                     setBrandData(JSON.parse(data));
-                }
-                else {
-                    console.log("brand data else part")
-                    fetch(settings['shopify-store-name'])
-                        .then((res) => res.json())
-                        .then((retryData) => {
-                            setBrandData(retryData);
-                        });
+                    // console.log('brandData title', JSON.parse(data));
                 }
             } catch (error) {
                 console.error('Error retrieving data:', error);
@@ -49,44 +40,17 @@ const ListingBlock = (props) => {
     useEffect(() => {
         async function getCoinsWrapper() {
             const data = await AsyncStorage.getItem('coinsData');
-            if (data) {
-                console.log({ data });
-                setCoinsData(() => data);
-            }
-            else {
-                function getCoins() {
-                    const headers = new Headers();
-                    headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
-                    headers.append('Content-Type', 'application/json');
-
-                    const requestData = {
-                        // eslint-disable-next-line prettier/prettier
-                        'shop': settings['shopify-name'],
-                        // eslint-disable-next-line prettier/prettier
-                        'email': user?.email,
-                    };
-
-                    const requestOptions = {
-                        method: 'POST',
-                        headers: headers,
-                        body: JSON.stringify(requestData),
-                    };
-
-                    fetch(
-                        'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
-                        requestOptions,
-                    )
-                        .then((res) => res.json())
-                        .then((data) => { setCoinsData(data)})
-                        .catch((error) => console.error('Error fetching coins data:', error));
-                }
-                getCoins();
+            if (data !== null) {
+                setCoinsData(JSON.parse(data));
+                console.log('coinsData', JSON.parse(data));
             }
         }
-        getCoinsWrapper()
-    }, [user, user?.email, settings]);
+        if (user?.email){
+            getCoinsWrapper();
+        }
+    }, [isLoggedin]);
 
-    console.log("-------->coinsData", coinsData);
+    // console.log("-------->coinsData", coinsData);
 
     return (
         <View style={styles.container}>
@@ -94,8 +58,6 @@ const ListingBlock = (props) => {
                 <Text>
                     {/* <Text>{coinsData?.coins + " " + "-" + brandData?.redemption_rate}</Text> */}
                     {/* <Text>{user?.email}</Text> */}
-                    <Text>{coinsData?.coins + ''}</Text>
-                    <Text>static text testing</Text>
                     {brandData?.redemption_rate && coinsData?.avaiable &&
                         (
                             <Text style={styles.block}>

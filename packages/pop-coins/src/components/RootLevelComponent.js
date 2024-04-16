@@ -3,12 +3,10 @@ import { useEffect } from 'react';
 import { getSettings } from '../../config';
 import { useUser } from '@appmaker-xyz/shopify';
 import AsyncStorage from '@react-native-community/async-storage';
-import { getUser } from '@appmaker-xyz/core';
 
 const RootLevelComponent = (props) => {
   const settings = getSettings();
-  const user = getUser();
-
+  const { user } = useUser();
   console.log('---------------------user------------', user);
 
   useEffect(() => {
@@ -60,10 +58,13 @@ const RootLevelComponent = (props) => {
     }
 
     // if (user?.email && settings['shopify-name']) {
-    getCoins();
+    if (user?.email) {
+      getCoins();
+    }
+    console.log('settings called', settings);
     getBrandData();
     // }
-  }, [settings['shopify-name'], user?.email, settings, user]);
+  }, [settings, user]);
 
   return null;
 };
