@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { getSettings } from '../../config';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Platform } from 'react-native';
 
 const PDPBlock = (props) => {
   const { attributes, onAction } = props;
@@ -98,10 +99,13 @@ const PDPBlock = (props) => {
   return (
     <View style={styles.container}>
       {brandData ? (
-        <Text style={styles.block}>
+        <View style={styles.block}>
           <Text>Earn</Text>
           <Image
-            style={{ width: 25, height: 25 }}
+            style={{
+              height: 25,
+              width: 25,
+            }}
             source={{ uri: settings['popcoin-logo']?.url }}
           />
           <Text>
@@ -113,7 +117,7 @@ const PDPBlock = (props) => {
             {Math.floor((brandData?.issuance_rate / 100) * salePriceValue)}
             &nbsp;
           </Text>
-        </Text>
+        </View>
       ) : null}
     </View>
   );
@@ -126,6 +130,8 @@ const styles = StyleSheet.create({
   },
   block: {
     display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

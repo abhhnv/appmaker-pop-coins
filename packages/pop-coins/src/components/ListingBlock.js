@@ -6,6 +6,7 @@ import { useProductListItem, useUser } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
 import { getSettings } from '../../config';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Platform } from 'react-native';
 
 
 const ListingBlock = (props) => {
@@ -45,7 +46,7 @@ const ListingBlock = (props) => {
                 console.log('coinsData', JSON.parse(data));
             }
         }
-        if (user?.email){
+        if (user?.email) {
             getCoinsWrapper();
         }
     }, [isLoggedin]);
@@ -55,41 +56,37 @@ const ListingBlock = (props) => {
     return (
         <View style={styles.container}>
             {isLoggedin ?
-                <Text>
-                    {/* <Text>{coinsData?.coins + " " + "-" + brandData?.redemption_rate}</Text> */}
-                    {/* <Text>{user?.email}</Text> */}
+                <View>
                     {brandData?.redemption_rate && coinsData?.avaiable &&
                         (
-                            <Text style={styles.block}>
-                                <Text>
-                                    <Text>or Rs. </Text>
-                                    {salePriceValue ?
-                                        <Text>{Math.floor(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue))}</Text>
-                                        :
-                                        <Text>{Math.floor(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue))}</Text>
-                                    }
-                                    <Text>&nbsp;+</Text>
-                                    <Image style={{ width: 25, height: 25 }}
+                            <View style={{ display: "flex", flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <Text>or Rs. </Text>
+                                {salePriceValue ?
+                                    <Text>{Math.floor(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue))}</Text>
+                                    :
+                                    <Text>{Math.floor(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue))}</Text>
+                                }
+                                <Text>&nbsp;+</Text>
+                                {/* {Platform === 'ios' ? <Text>Bean Coins</Text> : */}
+                                    <Image style={styles.imgself}
                                         source={{ uri: settings['popcoin-logo']?.url }}
                                     />
-                                </Text>
+                                {/* } */}
                                 <Text>
-                                    <Text>
-                                        {salePriceValue ?
-                                            <Text>
-                                                <Text>{(salePriceValue - (Math.floor(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue)))) < coinsData?.coins ? (salePriceValue - (Math.floor(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue)))) : coinsData?.coins}</Text>
-                                            </Text>
-                                            :
-                                            <Text>
-                                                <Text>{(regularPriceValue - (Math.floor(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue)))) < coinsData?.coins ? (regularPriceValue - (Math.floor(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue)))) : coinsData?.coins}</Text>
-                                            </Text>
-                                        }
-                                    </Text>
+                                    {salePriceValue ?
+                                        <Text>
+                                            <Text>{(salePriceValue - (Math.floor(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue)))) < coinsData?.coins ? (salePriceValue - (Math.floor(salePriceValue - ((brandData?.redemption_rate / 100) * salePriceValue)))) : coinsData?.coins}</Text>
+                                        </Text>
+                                        :
+                                        <Text>
+                                            <Text>{(regularPriceValue - (Math.floor(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue)))) < coinsData?.coins ? (regularPriceValue - (Math.floor(regularPriceValue - ((brandData?.redemption_rate / 100) * regularPriceValue)))) : coinsData?.coins}</Text>
+                                        </Text>
+                                    }
                                 </Text>
-                            </Text>
+                            </View>
                         )
                     }
-                </Text>
+                </View>
                 :
                 <Text>{' '}</Text>
             }
@@ -101,10 +98,13 @@ const styles = StyleSheet.create({
     container: {
         color: 'white',
     },
-    block: {
-        display: 'flex',
-        alignItems: 'center',
+    imgself: {
+        height: 25,
+        width: 25,
     },
+    block: {
+    }
 });
+
 
 export default ListingBlock;

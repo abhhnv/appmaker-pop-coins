@@ -208,6 +208,7 @@ const CartLoginBlock = (props) => {
       {!isLoggedin ? (
         <View>
           <Text style={styles.textLogin} onPress={handleLogin}>Log in to get upto {brandData?.redemption_rate}% off using Bean Coins </Text>
+          <Text>(Cannot be clubbed with other discounts)</Text>
         </View>
       )
         : <Text>{' '}</Text>

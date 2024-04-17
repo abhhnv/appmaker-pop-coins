@@ -6,6 +6,8 @@ import { useUser, useCart } from '@appmaker-xyz/shopify';
 import BeanCoinLogo from '../assets/bean-coin.png';
 import { getSettings } from '../../config';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Platform } from 'react-native';
+
 
 
 const CartEarnBlock = ({ attributes, onAction }) => {
@@ -52,13 +54,15 @@ const CartEarnBlock = ({ attributes, onAction }) => {
             {(
                 <View style={styles.block}>
                     {brandData?.issuance_rate ? (
-                        <Text style={styles.block}>
+                        <View style={styles.block}>
                             <Text>Earn </Text>
-                            <Image style={{ width: 25, height: 25 }} source={{ uri: settings['popcoin-logo']?.url }} />
+                            <Image style={styles.imgself}
+                                        source={{ uri: settings['popcoin-logo']?.url }}
+                                    />
                             <Text>{Math.floor((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
                             <Text>&nbsp;worth</Text>
                             <Text> Rs. {Math.floor((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
-                        </Text>
+                        </View>
                     )
                         : <Text> </Text>
                     }
@@ -79,6 +83,16 @@ const styles = StyleSheet.create({
     },
     block: {
         fontWeight: 'bold',
+        display: 'flex',
+        // backgroundColor: 'red',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    imgself: {
+        height: 25,
+        width: 25,
     },
 });
 
