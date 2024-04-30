@@ -7,17 +7,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 const RootLevelComponent = (props) => {
   const settings = getSettings();
   const { user } = useUser();
-  console.log('---------------------user------------', user);
 
   useEffect(() => {
     function getCoins() {
       const headers = new Headers();
       headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
       headers.append('Content-Type', 'application/json');
+      let shopName = settings['shopify-name'];
 
+      console.log({ shopName });
       const requestData = {
         // eslint-disable-next-line prettier/prettier
-        'shop': settings['shopify-name'],
+        'shop': 'iamcaffeine.myshopify.com',
         // eslint-disable-next-line prettier/prettier
         'email': user?.email,
       };
@@ -27,7 +28,7 @@ const RootLevelComponent = (props) => {
         headers: headers,
         body: JSON.stringify(requestData),
       };
-
+      console.log({ requestOptions });
       fetch(
         'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
         requestOptions,
@@ -61,10 +62,9 @@ const RootLevelComponent = (props) => {
     if (user?.email) {
       getCoins();
     }
-    console.log('settings called', settings);
     getBrandData();
     // }
-  }, [settings, user]);
+  }, [settings, user, settings['shopify-name']]);
 
   return null;
 };

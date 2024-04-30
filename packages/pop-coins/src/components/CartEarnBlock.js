@@ -21,7 +21,7 @@ const CartEarnBlock = ({ attributes, onAction }) => {
         isLoggedin,
     } = useUser();
 
-    const { cart, cartSubTotalAmount } = useCart();
+    const { cart, cartSubTotalAmount, cartTotalPrice } = useCart();
     const [brandData, setBrandData] = useState(null);
 
     useEffect(() => {
@@ -57,11 +57,11 @@ const CartEarnBlock = ({ attributes, onAction }) => {
                         <View style={styles.block}>
                             <Text>Earn </Text>
                             <Image style={styles.imgself}
-                                        source={{ uri: settings['popcoin-logo']?.url }}
-                                    />
-                            <Text>{Math.floor((brandData?.issuance_rate / 100) * cartSubTotalAmount)}</Text>
+                                source={{ uri: settings['popcoin-logo']?.url }}
+                            />
+                            <Text>{Math.floor((brandData?.issuance_rate / 100) * cartTotalPrice)}</Text>
                             <Text>&nbsp;worth</Text>
-                            <Text> Rs. {Math.floor((brandData?.issuance_rate / 100) * cartSubTotalAmount)}&nbsp;on this purchase</Text>
+                            <Text> Rs. {Math.floor((brandData?.issuance_rate / 100) * cartTotalPrice)}&nbsp;on this purchase</Text>
                         </View>
                     )
                         : <Text> </Text>

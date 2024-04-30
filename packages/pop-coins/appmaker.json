@@ -2,7 +2,7 @@
     "type": "extension",
     "id": "cls8rmnum000k3q0jmdhmu66y",
     "handle": "pop-coins",
-    "name": "POPCoins",
+    "name": "POPCoins-mcaffeine",
     "package": {
         "id": "cls8rmo0n000m3q0jy672aelb",
         "name": "@appmaker-packages/extension-pop-coins"
