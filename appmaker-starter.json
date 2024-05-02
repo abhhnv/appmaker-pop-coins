@@ -1,6 +1,11 @@
 {
-    "packages": {
-        "@appmaker-packages/extension-pop-coins": "packages/pop-coins"
-    },
-    "defaultPackage": "@appmaker-packages/extension-pop-coins"
+  "packages": {
+    "@appmaker-packages/extension-pop-coins": "packages/pop-coins"
+  },
+  "defaultPackage": "@appmaker-packages/extension-pop-coins",
+  "sdk": {
+    "version": "latest",
+    "name": "staging",
+    "currentVersion": "2.6.0-staging-2404.29.1637"
+  }
 }

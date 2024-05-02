@@ -23,6 +23,9 @@ const CartLoginBlock = (props) => {
   const [brandData, setBrandData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [alreadyDiscount, setAlreadyDiscount] = useState(false);
+  const [isFirst, setFirst] = useState("");
+  const [coinDiscount, setCoinDiscount] = useState("");
 
   const {
     user,
@@ -33,7 +36,7 @@ const CartLoginBlock = (props) => {
     isLoggedin,
   } = useUser();
 
-  const { totalQuantity, cartSubTotalAmount, cartTotalPrice, cartDiscountSavings } = useCart();
+  const { totalQuantity, cartSubTotalAmount, cartTotalPrice, cartDiscountSavings, lineItems, currentCart, cartTotalSavings, cartTotalSavingWithoutDiscount } = useCart();
   const { appliedDiscountCodeItem, hasAutomaticDiscountApplied, appliedAutomaticDiscountItem, hasCouponApplied, couponsList } = useDiscount(props);
 
   // brand data
@@ -101,10 +104,11 @@ const CartLoginBlock = (props) => {
     getCoins();
   }, []);
 
+
   // DISCOUNT CODE GENERATION
   useEffect(() => {
     // Fetch discount code only if the checkbox is checked and user email is available
-    if (isChecked && user?.email && cartTotalPrice) {
+    if (isChecked && user?.email && cartSubTotalAmount) {
       setLoading(true); // Set loading state to false when data fetching is completed
       const headers = new Headers();
       headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
@@ -113,7 +117,7 @@ const CartLoginBlock = (props) => {
       const requestData = {
         'shop': settings['shopify-name'],
         'email': user?.email,
-        'cart': cartTotalPrice,
+        'cart': cartSubTotalAmount,
       };
 
       const requestOptions = {
@@ -132,7 +136,7 @@ const CartLoginBlock = (props) => {
           setChecked(false);
         });
     }
-  }, [isChecked, user?.email, cartTotalPrice]);
+  }, [isChecked]);
 
   useEffect(() => {
     if (isChecked && discountData?.code) {
@@ -144,7 +148,7 @@ const CartLoginBlock = (props) => {
         },
       });
     }
-    else if (!isChecked && appliedDiscountCodeItem?.code) {
+    else if (!isChecked && appliedDiscountCodeItem?.code.includes('PopShop')) {
       // Remove coupon if checkbox is unchecked
       onAction({
         action: 'REMOVE_COUPON',
@@ -165,7 +169,7 @@ const CartLoginBlock = (props) => {
   }
 
   useEffect(() => {
-    if (!isChecked && appliedDiscountCodeItem?.code) {
+    if (!isChecked && appliedDiscountCodeItem?.code?.includes('PopShop')) {
       onAction({
         action: 'REMOVE_COUPON',
         params: {
@@ -173,7 +177,7 @@ const CartLoginBlock = (props) => {
         },
       });
     }
-    if (!isChecked && discountData?.code) {
+    if (!isChecked && discountData?.code?.includes('PopShop')) {
       onAction({
         action: 'REMOVE_COUPON',
         params: {
@@ -187,21 +191,77 @@ const CartLoginBlock = (props) => {
     setChecked(newValue);
   };
 
-  console.log("cart=============================================", cart?.discountApplications?.edges?.length);
+
+  // useEffect(() => {
+  //   if (isChecked === false) {
+  //     if (appliedDiscountCodeItem?.code?.includes('PopShop') && appliedDiscountCodeItem?.code?.length > 2) {
+  //       onAction({
+  //         action: 'REMOVE_COUPON',
+  //         params: {
+  //           coupon: appliedDiscountCodeItem?.code,
+  //         },
+  //       });
+  //     }
+  //   }
+  // }, [appliedDiscountCodeItem?.code, isChecked, onAction]);
+
 
   useEffect(() => {
-    console.log("ischeked", isChecked, appliedDiscountCodeItem?.code)
-    if (isChecked === false) {
-      if (appliedDiscountCodeItem?.code?.length > 2) {
-        onAction({
-          action: 'REMOVE_COUPON',
-          params: {
-            coupon: appliedDiscountCodeItem?.code,
-          },
-        });
+    function hasDiscount(array) {
+      // Iterate through each object in the array
+      for (let i = 0; i < array.length; i++) {
+        // Check if the current object's 'discountAllocations' array is not empty
+        if (array[i].node.discountAllocations.length > 0) {
+          // Iterate through each discount allocation
+          for (let j = 0; j < array[i].node.discountAllocations.length; j++) {
+            // Check if the 'code' key exists and starts with 'popshop'
+            if (array[i].node.discountAllocations[j].discountApplication &&
+              array[i].node.discountAllocations[j].discountApplication.code &&
+              array[i].node.discountAllocations[j].discountApplication.code.toLowerCase().startsWith("popshop")) {
+              // If found, consider it as no discount and continue to the next object
+              continue;
+            } else {
+              // If a discount allocation doesn't meet the condition, return true
+              setAlreadyDiscount(true)
+              return true;
+            }
+          }
+        }
       }
+      // If none of the objects have a non-empty 'discountAllocations' array or if all discounts are considered as no discount, return false
+      setAlreadyDiscount(false);
+      return false;
     }
-  }, [appliedDiscountCodeItem?.code, isChecked, onAction]);
+
+    hasDiscount(lineItems);
+  }, [lineItems]);
+
+  // console.log("lineitems", JSON.stringify(lineItems));
+  // console.log({ alreadyDiscount });
+  // console.log("lineItems", JSON.stringify(lineItems));
+  console.log("currentcart=============", currentCart);
+
+  // cart length logic
+  useEffect(() => {
+    // if (isChecked === true){
+    setChecked(false);
+    // }
+  }, [totalQuantity]);
+
+  console.log("couponList=======>", couponsList);
+  console.log("cartTotalSavings", cartTotalSavings);
+
+  useEffect(() => {
+    // let isStatic = cartSubTotalAmount;
+    // if (!isChecked){
+    // setCoinDiscount(Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(isStatic))))
+    if (!isChecked) {
+      setDiscountData(cartSubTotalAmount);
+    }
+  }, []);
+
+  console.log("cartTotalSavingWithoutDiscount", cartTotalSavingWithoutDiscount);
+  console.log("herehere", Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * 0.2)
 
   return (
     <View style={styles.container}>
@@ -213,50 +273,62 @@ const CartLoginBlock = (props) => {
       )
         : <Text>{' '}</Text>
       }
-
-      {isLoggedin ? (
-        <View>
-          <Text>
-            {coinsData?.avaiable ? (
-              <View style={styles.block}>
-                <CheckBox
-                  value={isChecked}
-                  onValueChange={(newValue) => handleCheckbox(newValue)}
-                  style={styles.checkbox}
-                />
-                {isChecked
-                  ?
-                  <View>
-                    {loading ? <Text>Loading...⏳</Text> :
-                      <Text>
-                        <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartSubTotalAmount)) < coinsData?.coins ? Math.round(((brandData?.redemption_rate / 100) * cartSubTotalAmount)) : coinsData?.coins} | Saved Using BeanCoins</Text>
-                        <Text>{"\n"}</Text>
-                        <Text>(Cannot be clubbed with other discounts)</Text>
-                      </Text>
-                    }
-                  </View>
-                  :
-                  <View>
-                    {loading ? <Text>Loading...⏳</Text> :
-                      <Text>
-                        <Text style={{ fontWeight: '900' }}>Rs. {Math.floor(((brandData?.redemption_rate / 100) * cartSubTotalAmount)) < coinsData?.coins ? Math.round(((brandData?.redemption_rate / 100) * cartSubTotalAmount)) : coinsData?.coins} | Save Using BeanCoins</Text>
-                        <Text>{"\n"}</Text>
-                        <Text>(Cannot be clubbed with other discounts)</Text>
-                      </Text>
-                    }
-                  </View>
-                }
+      <View>
+        {!alreadyDiscount ? (
+          <View>
+            {isLoggedin ? (
+              <View>
+                <Text>
+                  {coinsData?.avaiable ? (
+                    <View style={styles.block}>
+                      <CheckBox
+                        value={isChecked}
+                        onValueChange={(newValue) => handleCheckbox(newValue)}
+                        style={styles.checkbox}
+                      />
+                      {isChecked
+                        ?
+                        // checked
+                        <View>
+                          {loading ? <Text>Loading...⏳</Text> :
+                            <Text>
+                              {/* <Text style={styles.textLogin}>Saved Rs.&nbsp;{cartTotalSavings}&nbsp;using Bean Coins</Text> */}
+                              {/* <Text style={styles.textLogin}>Saved Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using Bean Coins</Text> */}
+                              {/* <Text style={styles.textLogin}>Save Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using Bean Coins</Text> */}
+                              <Text style={styles.textLogin}>Saved Rs.&nbsp;{Math.round(coinsData?.coins > Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) ? Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) : coinsData?.coins)}&nbsp;using Bean Coins</Text>
+                            </Text>
+                          }
+                        </View>
+                        :
+                        // unchecked
+                        <View>
+                          {loading ? <Text style={styles.textLogin}>Loading...⏳</Text> :
+                            <Text>
+                              {/* {cartSubTotalAmount === cartTotalPrice ? */}
+                              {/* <Text style={styles.textLogin}>uncheck-Save Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using Bean Coins</Text> */}
+                              <Text style={styles.textLogin}>Save Rs.&nbsp;{Math.round(coinsData?.coins > Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) ? Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) : coinsData?.coins)}&nbsp;using Bean Coins</Text>
+                              {/* :
+                                <Text>Loading...⏳</Text>} */}
+                            </Text>
+                          }
+                        </View>
+                      }
+                    </View>
+                  )
+                    :
+                    <Text>{' '}</Text>
+                  }
+                </Text>
               </View>
             )
               :
               <Text>{' '}</Text>
             }
-          </Text>
-        </View>
-      )
-        :
-        <Text>{' '}</Text>
-      }
+          </View>
+        ) :
+          <Text style={styles?.textLogin}>Bean Coins discount cannot be applied with existing coupon!</Text>
+        }
+      </View>
     </View>
   );
 };
