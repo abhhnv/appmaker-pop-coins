@@ -64,34 +64,30 @@ const CartLoginBlock = (props) => {
   }, [settings]);
 
   // coins data
-  useEffect(() => {
-    if (user?.email != null) {
-      // setUserEmail(user.email);
-      // fetchCoinsData(userEmail);
-      const headers = new Headers();
-      headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
-      headers.append('Content-Type', 'application/json');
+  // useEffect(() => {
+  //   if (user?.email != null) {
+  //     const headers = new Headers();
+  //     headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
+  //     headers.append('Content-Type', 'application/json');
 
-      const requestData = {
-        // eslint-disable-next-line prettier/prettier
-        'shop': settings['shopify-name'],
-        // eslint-disable-next-line prettier/prettier
-        'email': user?.email,
-      };
+  //     const requestData = {
+  //       'shop': settings['shopify-name'],
+  //       'email': user?.email,
+  //     };
 
-      const requestOptions = {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(requestData),
-      };
+  //     const requestOptions = {
+  //       method: 'POST',
+  //       headers: headers,
+  //       body: JSON.stringify(requestData),
+  //     };
 
-      fetch('https://prodreplica.mypopcoins.com/api/get/available/coins/email', requestOptions)
-        .then((res) => res.json())
-        .then((data) => {
-          setCoinsData(data);
-        });
-    }
-  }, [user?.email, user, userEmail, settings]);
+  //     fetch('https://prodreplica.mypopcoins.com/api/get/available/coins/email', requestOptions)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setCoinsData(data);
+  //       });
+  //   }
+  // }, [user?.email, user, userEmail, settings]);
 
 
   useEffect(() => {
@@ -222,7 +218,7 @@ const CartLoginBlock = (props) => {
               continue;
             } else {
               // If a discount allocation doesn't meet the condition, return true
-              setAlreadyDiscount(true)
+              setAlreadyDiscount(true);
               return true;
             }
           }
@@ -260,8 +256,8 @@ const CartLoginBlock = (props) => {
     }
   }, []);
 
-  console.log("cartTotalSavingWithoutDiscount", cartTotalSavingWithoutDiscount);
-  console.log("herehere", Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * 0.2)
+
+  console.log("coinsData", JSON.stringify(coinsData));
 
   return (
     <View style={styles.container}>
@@ -274,11 +270,15 @@ const CartLoginBlock = (props) => {
         : <Text>{' '}</Text>
       }
       <View>
+        {/* <Text>sample text</Text> */}
         {!alreadyDiscount ? (
           <View>
             {isLoggedin ? (
               <View>
+
                 <Text>
+                  <Text>{coinsData?.coins + "static"}</Text>
+
                   {coinsData?.avaiable ? (
                     <View style={styles.block}>
                       <CheckBox

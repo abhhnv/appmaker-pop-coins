@@ -14,11 +14,11 @@ const RootLevelComponent = (props) => {
       headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
       headers.append('Content-Type', 'application/json');
       let shopName = settings['shopify-name'];
-
-      console.log({ shopName });
+      let BASEAPI = settings['shopping-store-name'];
+      console.log('shopname', shopName);
       const requestData = {
         // eslint-disable-next-line prettier/prettier
-        'shop': 'iamcaffeine.myshopify.com',
+        'shop': shopName,
         // eslint-disable-next-line prettier/prettier
         'email': user?.email,
       };
