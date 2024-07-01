@@ -4,6 +4,7 @@ import EarnBlock from '../components/earnBlock';
 import PDPBlock from '../components/PDPBlock';
 import ListingBlock from '../components/ListingBlock';
 import CartEarnBlock from '../components/CartEarnBlock';
+import DrawerMenuBlock from '../components/DrawerMenuBlock';
 
 const blocks = [
   {
@@ -29,6 +30,10 @@ const blocks = [
   {
     name: 'popcoin/cart-earn-block',
     View: CartEarnBlock,
+  },
+  {
+    name: 'popcoin/drawer-menu-block',
+    View: DrawerMenuBlock,
   },
 ];
 

@@ -10,6 +10,7 @@ import { getSettings } from '../config';
 import AsyncStorage from '@react-native-community/async-storage';
 import { getUser } from '@appmaker-xyz/core';
 import RootLevelComponent from './components/RootLevelComponent';
+import DrawerMenuBlock from './components/DrawerMenuBlock';
 
 export function activate(params) {
   setSettings(params?.settings);
@@ -99,6 +100,25 @@ export function activate(params) {
         }
       }
       console.log({ data });
+      return data;
+    },
+  );
+
+  // Drawer Menu
+  appmaker.addFilter(
+    'inapp-page-data-response',
+    'popcoin/drawer-menu-block',
+    (data, { pageId }) => {
+      if (pageId === 'DrawerMenu') {
+        const deliveryBlockIndex = findBlockIndex(
+          data.blocks,
+          DrawerMenuBlock.clientId,
+        );
+        if (deliveryBlockIndex === -1) {
+          data.blocks.splice(1, 0, DrawerMenuBlock);
+        }
+        data.blocks.splice(1, 0, DrawerMenuBlock);
+      }
       return data;
     },
   );

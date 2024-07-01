@@ -11,14 +11,17 @@ const RootLevelComponent = (props) => {
   useEffect(() => {
     function getCoins() {
       const headers = new Headers();
+      // TODO
       headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
       headers.append('Content-Type', 'application/json');
       let shopName = settings['shopify-name'];
       let BASEAPI = settings['shopping-store-name'];
       console.log('shopname', shopName);
       const requestData = {
+        // TODO
+        // two-brothers-organic-farms-amorearth.myshopify.com
         // eslint-disable-next-line prettier/prettier
-        'shop': shopName,
+        'shop': 'iamcaffeine.myshopify.com',
         // eslint-disable-next-line prettier/prettier
         'email': user?.email,
       };
@@ -29,8 +32,9 @@ const RootLevelComponent = (props) => {
         body: JSON.stringify(requestData),
       };
       console.log({ requestOptions });
+      // TODO
       fetch(
-        'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
+        'https://brand-loyalty.popclub.co.in/api/get/available/coins/email',
         requestOptions,
       )
         .then((res) => res.json())

@@ -66,6 +66,7 @@ const CartEarnBlock = ({ attributes, onAction }) => {
                     )
                         : <Text> </Text>
                     }
+                    <Text> </Text>
                 </View>
             )}
         </View>

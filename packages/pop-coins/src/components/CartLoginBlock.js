@@ -107,6 +107,8 @@ const CartLoginBlock = (props) => {
     if (isChecked && user?.email && cartSubTotalAmount) {
       setLoading(true); // Set loading state to false when data fetching is completed
       const headers = new Headers();
+      // TODO
+      // Basic cG9wY2x1YkBzaG9waWZ5X2JhY2tlbmQ6UG9wQ2x1YkBibHJAMjAyMw==
       headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
       headers.append('Content-Type', 'application/json');
 
@@ -121,8 +123,8 @@ const CartLoginBlock = (props) => {
         headers: headers,
         body: JSON.stringify(requestData),
       };
-
-      fetch('https://prodreplica.mypopcoins.com/api/get/coins/discount/email', requestOptions)
+      // TODO
+      fetch('https://brand-loyalty.popclub.co.in/api/get/coins/discount/email', requestOptions)
         .then((res) => res.json())
         .then((data) => {
           setDiscountData(data);
@@ -263,23 +265,26 @@ const CartLoginBlock = (props) => {
     <View style={styles.container}>
       {!isLoggedin ? (
         <View>
-          <Text style={styles.textLogin} onPress={handleLogin}>Log in to get upto {brandData?.redemption_rate}% off using Bean Coins </Text>
-          <Text>(Cannot be clubbed with other discounts)</Text>
+          {!alreadyDiscount ? (
+            <View>
+              <Text style={styles.textLogin} onPress={handleLogin}>Log in to get upto {brandData?.redemption_rate}% off using POP Coins </Text>
+              <Text>(Cannot be clubbed with other discounts)</Text>
+            </View>
+          ) : (
+            <Text> </Text>
+          )}
         </View>
       )
         : <Text>{' '}</Text>
       }
       <View>
-        {/* <Text>sample text</Text> */}
         {!alreadyDiscount ? (
           <View>
             {isLoggedin ? (
               <View>
-
                 <Text>
-                  <Text>{coinsData?.coins + "static"}</Text>
-
-                  {coinsData?.avaiable ? (
+                  {/* <Text>{JSON.parse(coinsData).coins + "static"}</Text> */}
+                  {JSON.parse(coinsData)?.available ? (
                     <View style={styles.block}>
                       <CheckBox
                         value={isChecked}
@@ -292,10 +297,10 @@ const CartLoginBlock = (props) => {
                         <View>
                           {loading ? <Text>Loading...⏳</Text> :
                             <Text>
-                              {/* <Text style={styles.textLogin}>Saved Rs.&nbsp;{cartTotalSavings}&nbsp;using Bean Coins</Text> */}
-                              {/* <Text style={styles.textLogin}>Saved Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using Bean Coins</Text> */}
-                              {/* <Text style={styles.textLogin}>Save Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using Bean Coins</Text> */}
-                              <Text style={styles.textLogin}>Saved Rs.&nbsp;{Math.round(coinsData?.coins > Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) ? Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) : coinsData?.coins)}&nbsp;using Bean Coins</Text>
+                              {/* <Text style={styles.textLogin}>Saved Rs.&nbsp;{cartTotalSavings}&nbsp;using POP Coins</Text> */}
+                              {/* <Text style={styles.textLogin}>Saved Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using POP Coins</Text> */}
+                              {/* <Text style={styles.textLogin}>Save Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using POP Coins</Text> */}
+                              <Text style={styles.textLogin}>Saved Rs.&nbsp;{Math.round(JSON.parse(coinsData).coins > Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) ? Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) : JSON.parse(coinsData).coins)}&nbsp;using POP Coins</Text>
                             </Text>
                           }
                         </View>
@@ -305,8 +310,8 @@ const CartLoginBlock = (props) => {
                           {loading ? <Text style={styles.textLogin}>Loading...⏳</Text> :
                             <Text>
                               {/* {cartSubTotalAmount === cartTotalPrice ? */}
-                              {/* <Text style={styles.textLogin}>uncheck-Save Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using Bean Coins</Text> */}
-                              <Text style={styles.textLogin}>Save Rs.&nbsp;{Math.round(coinsData?.coins > Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) ? Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) : coinsData?.coins)}&nbsp;using Bean Coins</Text>
+                              {/* <Text style={styles.textLogin}>uncheck-Save Rs.&nbsp;{Math.min(coinsData?.coins, parseInt(brandData?.max_discount_per_order), Math.round((parseInt(brandData?.redeem) / 100) * parseInt(cartSubTotalAmount)))}&nbsp;using POP Coins</Text> */}
+                              <Text style={styles.textLogin}>Save Rs.&nbsp;{Math.round(JSON.parse(coinsData).coins > Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) ? Math.trunc(cartTotalPrice - cartTotalSavingWithoutDiscount) * (brandData.redeem / 100) : JSON.parse(coinsData).coins)}&nbsp;using POP Coins</Text>
                               {/* :
                                 <Text>Loading...⏳</Text>} */}
                             </Text>
@@ -326,7 +331,7 @@ const CartLoginBlock = (props) => {
             }
           </View>
         ) :
-          <Text style={styles?.textLogin}>Bean Coins discount cannot be applied with existing coupon!</Text>
+          <Text style={styles?.textLogin}>POP Coins discount cannot be applied with existing coupon!</Text>
         }
       </View>
     </View>
@@ -337,7 +342,7 @@ const styles = StyleSheet.create({
   container: {
     color: 'white',
     paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     display: 'flex',
     alignItems: 'flex-start',
   },

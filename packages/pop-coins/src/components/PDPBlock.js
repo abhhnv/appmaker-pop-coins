@@ -61,7 +61,10 @@ const PDPBlock = (props) => {
         } else {
           console.log('elsepart====================');
           const headers = new Headers();
-          headers.append('Authorization', 'Basic em9oOlowaCRQcm9iQDIwMjM=');
+          headers.append(
+            'Authorization',
+            'Basic cG9wY2x1YkBzaG9waWZ5X2JhY2tlbmQ6UG9wQ2x1YkBibHJAMjAyMw==',
+          );
           headers.append('Content-Type', 'application/json');
 
           const requestData = {
@@ -78,7 +81,7 @@ const PDPBlock = (props) => {
           };
 
           fetch(
-            'https://prodreplica.mypopcoins.com/api/get/available/coins/email',
+            'https://brand-loyalty.popclub.co.in/api/get/available/coins/email',
             requestOptions,
           )
             .then((res) => res.json())
